@@ -114,7 +114,7 @@ export class BoilerplateCardEditor extends LitElement implements LovelaceCardEdi
     this._helpers.importMoreInfoControl('climate');
 
     // You can restrict on domain type
-    const entities = Object.keys(this.hass.states).filter(eid => eid.substr(0, eid.indexOf('.')) === 'sun');
+    const entities = Object.values(this.hass.states).filter(entity => entity.entity_id.startsWith("sensor.") && entity.entity_id.endsWith("_tag") && entity.attributes["history"] != null).map(entity => entity.entity_id);
 
     return html`
       <div class="card-config">

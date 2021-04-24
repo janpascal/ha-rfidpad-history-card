@@ -13,7 +13,6 @@ import {
 import {
   HomeAssistant,
   hasConfigOrEntityChanged,
-  hasAction,
   ActionHandlerEvent,
   handleAction,
   LovelaceCardEditor,
@@ -23,7 +22,6 @@ import {
 import './editor';
 
 import type { BoilerplateCardConfig } from './types';
-import { actionHandler } from './action-handler-directive';
 import { CARD_VERSION } from './const';
 import { localize } from './localize/localize';
 
@@ -82,7 +80,26 @@ export class BoilerplateCard extends LitElement {
     }
 
     return hasConfigOrEntityChanged(this, changedProps, false);
+      }
+
+  renderStyle(): TemplateResult {
+    return html`
+      <style>
+        paper-toggle-button {
+          padding-top: 16px;
+        }
+        paper-item-body [secondary] {
+            font-size: x-small;
+        }
+        ha-card.lock_history {
+            overflow-y: auto;
+            height: 400px;
+        }
+      </style>
+    `;
   }
+
+
 
   // https://lit-element.polymer-project.org/guide/templates
   protected render(): TemplateResult | void {
@@ -95,17 +112,31 @@ export class BoilerplateCard extends LitElement {
       return this._showError(localize('common.show_error'));
     }
 
+    const history = this.hass.states[this.config.entity].attributes["history"];
+
     return html`
+      ${this.renderStyle()}
       <ha-card
-        .header=${this.config.name}
-        @action=${this._handleAction}
-        .actionHandler=${actionHandler({
-          hasHold: hasAction(this.config.hold_action),
-          hasDoubleClick: hasAction(this.config.double_tap_action),
-        })}
+        header="RFIDPad History"
+        class="lock_history"
         tabindex="0"
         .label=${`Boilerplate: ${this.config.entity || 'No Entity Defined'}`}
-      ></ha-card>
+      >
+        ${history.map(item => html`
+          <paper-icon-item .item=${item}>
+            <ha-icon
+                icon=${item.button == "DISARM" ? "mdi:home" : "mdi:lock"}
+                slot="item-icon">
+            </ha-icon>
+            <paper-item-body two-line>
+                <div>${item.tag_name}
+                    ${item.tag_valid ? "" : " (INVALID)"}
+                </div>
+              <div secondary>${item.date}</div>
+            </paper-item-body>
+          </paper-item>
+        `)}
+      </ha-card>
     `;
   }
 
