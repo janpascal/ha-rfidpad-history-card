@@ -99,7 +99,29 @@ export class BoilerplateCard extends LitElement {
     `;
   }
 
+  renderHistory(): TemplateResult {
+    if (!this.config.entity) {
+     return html``;
+    }
 
+    const history = this.hass.states[this.config.entity].attributes["history"];
+
+    return  html`${history.map(item => html`
+      <paper-icon-item .item=${item}>
+        <ha-icon
+            icon=${item.button == "DISARM" ? "mdi:home" : "mdi:lock"}
+            slot="item-icon">
+        </ha-icon>
+        <paper-item-body two-line>
+            <div>${item.tag_name}
+                ${item.tag_valid ? "" : " (INVALID)"}
+            </div>
+          <div secondary>${item.date}</div>
+        </paper-item-body>
+      </paper-item>
+      `)}
+    `;
+  }
 
   // https://lit-element.polymer-project.org/guide/templates
   protected render(): TemplateResult | void {
@@ -112,8 +134,6 @@ export class BoilerplateCard extends LitElement {
       return this._showError(localize('common.show_error'));
     }
 
-    const history = this.hass.states[this.config.entity].attributes["history"];
-
     return html`
       ${this.renderStyle()}
       <ha-card
@@ -122,20 +142,7 @@ export class BoilerplateCard extends LitElement {
         tabindex="0"
         .label=${`Boilerplate: ${this.config.entity || 'No Entity Defined'}`}
       >
-        ${history.map(item => html`
-          <paper-icon-item .item=${item}>
-            <ha-icon
-                icon=${item.button == "DISARM" ? "mdi:home" : "mdi:lock"}
-                slot="item-icon">
-            </ha-icon>
-            <paper-item-body two-line>
-                <div>${item.tag_name}
-                    ${item.tag_valid ? "" : " (INVALID)"}
-                </div>
-              <div secondary>${item.date}</div>
-            </paper-item-body>
-          </paper-item>
-        `)}
+        ${this.renderHistory()}
       </ha-card>
     `;
   }
