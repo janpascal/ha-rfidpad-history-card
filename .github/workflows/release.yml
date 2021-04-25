@@ -26,7 +26,7 @@ jobs:
 
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/ha-rfidpad-history-card/ha-rfidpad-history-card/dist/boilerplate-card.js
-          asset_name: boilerplate-card.js
+          file: /home/runner/work/ha-rfidpad-history-card/ha-rfidpad-history-card/dist/rfidpad-history-card.js
+          asset_name: rfidpad-history-card.js
           tag: ${{ github.ref }}
           overwrite: true

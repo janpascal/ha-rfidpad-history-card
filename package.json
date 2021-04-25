@@ -1,18 +1,19 @@
 {
-  "name": "boilerplate-card",
+  "name": "rfidpad-history-card",
   "version": "1.3.2",
-  "description": "Lovelace boilerplate-card",
+  "description": "Lovelace RFIDPad History card",
   "keywords": [
     "home-assistant",
     "homeassistant",
     "hass",
     "automation",
     "lovelace",
-    "custom-cards"
+    "custom-cards",
+    "rfidpad"
   ],
-  "module": "boilerplate-card.js",
-  "repository": "git@github.com:custom_cards/boilerplate-card.git",
-  "author": "Ian Richardson <iantrich@gmail.com>",
+  "module": "rfidpad-history-card.js",
+  "repository": "git@github.com:janpascal/ha-rfidpad-history-card.git",
+  "author": "Jan-Pascal van Best <janpascal@vanbest.org>",
   "license": "MIT",
   "dependencies": {
     "custom-card-helpers": "^1.6.6",

@@ -21,13 +21,13 @@ import {
 
 import './editor';
 
-import type { BoilerplateCardConfig } from './types';
+import type { RFIDPadHistoryCardConfig } from './types';
 import { CARD_VERSION } from './const';
 import { localize } from './localize/localize';
 
 /* eslint no-console: 0 */
 console.info(
-  `%c  BOILERPLATE-CARD \n%c  ${localize('common.version')} ${CARD_VERSION}    `,
+  `%c  rfidpad-history-card \n%c  ${localize('common.version')} ${CARD_VERSION}    `,
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray',
 );
@@ -35,16 +35,16 @@ console.info(
 // This puts your card into the UI card picker dialog
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
-  type: 'boilerplate-card',
-  name: 'Boilerplate Card',
-  description: 'A template custom card for you to create something awesome',
+  type: 'rfidpad-history-card',
+  name: 'RFIDPad History Card',
+  description: 'A custom card that that the RFIDPad tag usage history',
 });
 
 // TODO Name your custom element
-@customElement('boilerplate-card')
-export class BoilerplateCard extends LitElement {
+@customElement('rfidpad-history-card')
+export class RFIDPadHistoryCard extends LitElement {
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
-    return document.createElement('boilerplate-card-editor');
+    return document.createElement('rfidpad-history-card-editor');
   }
 
   public static getStubConfig(): object {
@@ -54,10 +54,10 @@ export class BoilerplateCard extends LitElement {
   // TODO Add any properities that should cause your element to re-render here
   // https://lit-element.polymer-project.org/guide/properties
   @property({ attribute: false }) public hass!: HomeAssistant;
-  @internalProperty() private config!: BoilerplateCardConfig;
+  @internalProperty() private config!: RFIDPadHistoryCardConfig;
 
   // https://lit-element.polymer-project.org/guide/properties#accessors-custom
-  public setConfig(config: BoilerplateCardConfig): void {
+  public setConfig(config: RFIDPadHistoryCardConfig): void {
     // TODO Check for required fields and that they are of the proper format
     if (!config) {
       throw new Error(localize('common.invalid_configuration'));
@@ -68,7 +68,7 @@ export class BoilerplateCard extends LitElement {
     }
 
     this.config = {
-      name: 'Boilerplate',
+      name: 'RFIDPad History',
       ...config,
     };
   }
@@ -140,7 +140,7 @@ export class BoilerplateCard extends LitElement {
         header="RFIDPad History"
         class="lock_history"
         tabindex="0"
-        .label=${`Boilerplate: ${this.config.entity || 'No Entity Defined'}`}
+        .label=${`RFIDPad History: ${this.config.entity || 'No Entity Defined'}`}
       >
         ${this.renderHistory()}
       </ha-card>
