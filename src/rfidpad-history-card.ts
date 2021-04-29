@@ -13,8 +13,6 @@ import {
 import {
   HomeAssistant,
   hasConfigOrEntityChanged,
-  ActionHandlerEvent,
-  handleAction,
   LovelaceCardEditor,
   getLovelace,
 } from 'custom-card-helpers'; // This is a community maintained npm module with common helper functions/types
@@ -37,7 +35,7 @@ console.info(
 (window as any).customCards.push({
   type: 'rfidpad-history-card',
   name: 'RFIDPad History Card',
-  description: 'A custom card that that the RFIDPad tag usage history',
+  description: 'A custom card that shows the RFIDPad tag usage history',
 });
 
 // TODO Name your custom element
@@ -113,8 +111,8 @@ export class RFIDPadHistoryCard extends LitElement {
             slot="item-icon">
         </ha-icon>
         <paper-item-body two-line>
-            <div>${item.tag_name}
-                ${item.tag_valid ? "" : " (INVALID)"}
+            <div>${item.tag_name ? item.tag_name : item.tag}
+                ${item.tag_valid ? "" : " (INVALIDS)"}
             </div>
           <div secondary>${item.date}</div>
         </paper-item-body>
@@ -145,12 +143,6 @@ export class RFIDPadHistoryCard extends LitElement {
         ${this.renderHistory()}
       </ha-card>
     `;
-  }
-
-  private _handleAction(ev: ActionHandlerEvent): void {
-    if (this.hass && this.config && ev.detail.action) {
-      handleAction(this, this.hass, this.config, ev.detail.action);
-    }
   }
 
   private _showWarning(warning: string): TemplateResult {
